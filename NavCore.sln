@@ -1,16 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavConsole", "NavConsole\NavConsole.csproj", "{B496FBDE-8811-46FC-A2B6-0AC4FB241A96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavCore", "NavCore\NavCore.csproj", "{444EDCAF-5803-4DED-BED6-5C900CA1D69B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC89E55E-B52F-4726-9F37-2863266D79B7}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,17 +26,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://mstickland.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = NavConsole\\NavConsole.csproj
-		SccProjectName1 = NavConsole
-		SccLocalPath1 = NavConsole
-		SccProjectUniqueName2 = NavCore\\NavCore.csproj
-		SccProjectName2 = NavCore
-		SccLocalPath2 = NavCore
 	EndGlobalSection
 EndGlobal

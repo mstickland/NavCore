@@ -19,7 +19,7 @@ namespace NavCore.DistanceNavigation {
             DestinationDistWeight   = destWeight;
         }
 
-        public double GetPathWeight(PositionNode start, PositionNode current, PositionNode potential, PositionNode destination, List<PositionNode> path) {
+        public double GetPathWeight(PositionNode start, PositionNode current, PositionNode potential, PositionNode destination, IEnumerable<PositionNode> path) {
             return NodeMath.GetDistance(potential.Position, current.Position) * ImmediateDistWeight +
                    NodeMath.GetDistance(potential.Position, destination.Position) * DestinationDistWeight;
         }

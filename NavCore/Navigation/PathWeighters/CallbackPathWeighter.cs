@@ -21,25 +21,40 @@ namespace NavCore.Navigation.PathWeighters {
         private readonly Func<TNode, double> _oneArg;
         private readonly Func<TNode, TNode, TNode, double> _threeArg;
         private readonly Func<TNode, TNode, TNode, TNode, double> _fourArg;
-        private readonly Func<TNode, TNode, TNode, TNode, List<TNode>, double> _fiveArg;
+        private readonly Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> _fiveArg;
 
         /// <summary>
         /// Constructor that sets callback
+        /// 
+        /// /// <summary>
+        /// Argument Order: potential
+        /// </summary>
         /// </summary>
         /// <param name="callback"></param>
         public CallbackWeighter(Func<TNode, double> callback) {
             _oneArg = callback;
         }
 
+
+        /// <summary>
+        /// Argument Order: current, potential, destination
+        /// </summary>
         public CallbackWeighter(Func<TNode, TNode, TNode, double> callback) {
             _threeArg = callback;
         }
 
+        /// <summary>
+        /// Argument Order: start, current, potential, destination
+        /// </summary>
         public CallbackWeighter(Func<TNode, TNode, TNode, TNode, double> callback) {
             _fourArg = callback;
         }
 
-        public CallbackWeighter(Func<TNode, TNode, TNode, TNode, List<TNode>, double> callback) {
+        /// <summary>
+        /// Argument Order: start, current, potential, destination, pathSoFar
+        /// </summary>
+        /// <param name="callback"></param>
+        public CallbackWeighter(Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> callback) {
             _fiveArg = callback;
         }
 
@@ -53,7 +68,7 @@ namespace NavCore.Navigation.PathWeighters {
         /// <param name="pathSoFar">A list of every node in our current path</param>
         /// <returns>The weight/cost of traveling from current node to potential node</returns>
         /// <returns></returns>
-        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, List<TNode> pathSoFar) {
+        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, IEnumerable<TNode> pathSoFar) {
 
             return _fiveArg?.Invoke(start, current, potential, destination, pathSoFar) ?? 
                    _fourArg?.Invoke(start, current, potential, destination) ??
@@ -89,7 +104,7 @@ namespace NavCore.Navigation.PathWeighters {
         /// <param name="destination">The destination node. Where we need to reach</param>
         /// <param name="pathSoFar">A list of every node in our current path</param>
         /// <returns>The weight/cost of traveling from current node to potential node</returns>
-        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, List<TNode> pathSoFar) {
+        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, IEnumerable<TNode> pathSoFar) {
             return _callback(potential);
         }
     }
@@ -116,7 +131,7 @@ namespace NavCore.Navigation.PathWeighters {
         /// <param name="destination">The destination node. Where we need to reach</param>
         /// <param name="pathSoFar">A list of every node in our current path</param>
         /// <returns>The weight/cost of traveling from current node to potential node</returns>
-        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, List<TNode> pathSoFar) {
+        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, IEnumerable<TNode> pathSoFar) {
             return _callback(current, potential, destination);
         }
     }
@@ -143,7 +158,7 @@ namespace NavCore.Navigation.PathWeighters {
         /// <param name="destination">The destination node. Where we need to reach</param>
         /// <param name="pathSoFar">A list of every node in our current path</param>
         /// <returns>The weight/cost of traveling from current node to potential node</returns>
-        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, List<TNode> pathSoFar) {
+        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, IEnumerable<TNode> pathSoFar) {
             return _callback(start, current, potential, destination);
         }
     }
@@ -151,13 +166,13 @@ namespace NavCore.Navigation.PathWeighters {
     public sealed class CallbackWeighterFiveArg<TNode> : IPathWeighter<TNode> where TNode : INavigationNode {
 
 
-        private readonly Func<TNode, TNode, TNode, TNode, List<TNode>, double> _callback;
+        private readonly Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> _callback;
 
         /// <summary>
         /// Constructor that sets callback
         /// </summary>
         /// <param name="callback"></param>
-        public CallbackWeighterFiveArg(Func<TNode, TNode, TNode, TNode, List<TNode>, double> callback) {
+        public CallbackWeighterFiveArg(Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> callback) {
             _callback = callback;
         }
 
@@ -171,7 +186,7 @@ namespace NavCore.Navigation.PathWeighters {
         /// <param name="destination">The destination node. Where we need to reach</param>
         /// <param name="pathSoFar">A list of every node in our current path</param>
         /// <returns>The weight/cost of traveling from current node to potential node</returns>
-        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, List<TNode> pathSoFar) {
+        public double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, IEnumerable<TNode> pathSoFar) {
             return _callback(start, current, potential, destination, pathSoFar);
         }
     }

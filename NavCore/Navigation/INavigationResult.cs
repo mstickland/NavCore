@@ -16,7 +16,7 @@ namespace NavCore.Navigation {
         /// <summary>
         /// The navigated route. Will be empty if Success is false
         /// </summary>
-        IReadOnlyCollection<TNode> Route { get; }
+        IEnumerable<TNode> Route { get; }
 
         double TotalWeight { get; }
 

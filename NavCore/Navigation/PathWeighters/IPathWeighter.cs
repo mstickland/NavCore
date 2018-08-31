@@ -8,7 +8,7 @@ namespace NavCore.Navigation.PathWeighters {
 
     public interface IPathWeighter<TNode> {
 
-        double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, List<TNode> pathSoFar);
+        double GetPathWeight(TNode start, TNode current, TNode potential, TNode destination, IEnumerable<TNode> pathSoFar);
 
     }
 }

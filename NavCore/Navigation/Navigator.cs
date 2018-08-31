@@ -60,7 +60,7 @@ namespace NavCore.Navigation
         /// Constructor. Takes a function reference that will be used to determine how paths are weighted
         /// </summary>
         /// <param name="comparison"></param>
-        public Navigator(Func<TNavNode, TNavNode, TNavNode, TNavNode, List<TNavNode>, double> comparison) {
+        public Navigator(Func<TNavNode, TNavNode, TNavNode, TNavNode, IEnumerable<TNavNode>, double> comparison) {
             Comparer = new CallbackWeighterFiveArg<TNavNode>(comparison);
         }
 

@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 namespace NavConsole {
     class Program {
 
-
+        /// <summary>
+        /// Program entry point. Runs Sample Navigation
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args) {
 
             new SampleNavigation().Run(args);

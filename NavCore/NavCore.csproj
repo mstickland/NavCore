@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Util\NavPoint.cs" />
+    <Compile Include="DistanceNavigation\NavPoint.cs" />
     <Compile Include="DistanceNavigation\PositionNode.cs" />
     <Compile Include="DistanceNavigation\DistancePathWeighter.cs" />
+    <Compile Include="Fluent\FluentNavigation.cs" />
+    <Compile Include="Fluent\NavigationContext.cs" />
     <Compile Include="Navigation\INavigationNode.cs" />
     <Compile Include="Navigation\INavigationResult.cs" />
     <Compile Include="Navigation\INavigator.cs" />

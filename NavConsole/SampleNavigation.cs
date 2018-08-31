@@ -1,4 +1,5 @@
 ﻿using NavCore.DistanceNavigation;
+using NavCore.Fluent;
 using NavCore.Navigation;
 using NavCore.Navigation.PathWeighters;
 using NavCore.Util;
@@ -30,8 +31,34 @@ namespace NavConsole {
             DoLetterNavigation(args.FirstOrDefault());
             WriteHeader("Distance Navigation");
             DoDistanceNavigation();
+            WriteHeader("Fluent Navigation");
+            DoFluentNavigation();
             WriteHeader("Progress Example");
             DoNavigateWithProgress();
+
+            
+        }
+
+        /// <summary>
+        /// Letter navigation using fluent syntax
+        /// </summary>
+        private void DoFluentNavigation() {
+
+            Dictionary<char, NavigationNode> nodes = SetupNodes();
+            var start = nodes['A'];
+            var destination = nodes ['Z'];
+            var heuristic = new CallbackWeighter<NavigationNode>( node => IsVowel(node.Name) ? 0 : 1);
+
+            Console.WriteLine("Works exactly the same as other example, but with nice fluent syntax.");
+            //Interfaces make function calls very straight forward
+            var path = FluentNavigation
+                                .StartNavigation<NavigationNode>()
+                                .From(start)
+                                .To(destination)                                
+                                .Using(heuristic)
+                                .GetPath();
+
+            Console.WriteLine(path);
         }
 
         /// <summary>
@@ -181,7 +208,7 @@ namespace NavConsole {
             
 
             var comparer = new DistancePathWeighter();
-            var navigator = new Navigator<PositionNode>( comparer);
+            var navigator = new Navigator<PositionNode>(comparer);
 
             //Notice that the navigator will always find a path if one exists
             //However effectively weighting our heuristic can improve our results
@@ -192,6 +219,7 @@ namespace NavConsole {
             Console.WriteLine(navigator.Navigate(start, end));
             comparer.SetWeights(0.1, 0.9);
             Console.WriteLine(navigator.Navigate(start, end));
+
         }
 
         /// <summary>

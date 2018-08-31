@@ -27,6 +27,24 @@ namespace NavCore.Util {
 
 
         /// <summary>
+        /// Gets the distance the Distance between the two points, squared for faster speed
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <returns></returns>
+        public static double GetDistanceSq(int x1, int y1, int x2, int y2)
+        {
+
+            double dx = (x2 - x1);
+            double dy = (y2 - y1);
+
+            return (dx * dx) + (dy * dy);
+        }
+
+
+        /// <summary>
         /// Gets the distance the Distance between the two points
         /// </summary>
         /// <param name="p1"></param>
@@ -36,6 +54,22 @@ namespace NavCore.Util {
 
             return Math.Sqrt(GetDistanceSq(p1, p2));
         }
+
+
+        /// <summary>
+        /// Gets the distance the Distance between the two points
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <returns></returns>
+        public static double GetDistance(int x1, int y1, int x2, int y2)
+        {
+
+            return Math.Sqrt(GetDistanceSq(x1, y1, x2, y2));
+        }
+
 
     }
 }

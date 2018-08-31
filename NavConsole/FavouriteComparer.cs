@@ -14,7 +14,7 @@ namespace NavConsole {
         private string _favouriteChars;
         public string FavouriteCharacters { get { return _favouriteChars ?? String.Empty; } set { _favouriteChars = value; } }
 
-        public double GetPathWeight(NavigationNode start, NavigationNode current, NavigationNode potential, NavigationNode destination, List<NavigationNode> pathSoFar) {
+        public double GetPathWeight(NavigationNode start, NavigationNode current, NavigationNode potential, NavigationNode destination, IEnumerable<NavigationNode> pathSoFar) {
             if (String.IsNullOrEmpty(potential.Name))
                 return 1.0f;
 
