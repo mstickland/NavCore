@@ -56,6 +56,10 @@
     <Compile Include="Navigation\NavigationNodeBase.cs" />
     <Compile Include="Navigation\NavigationResult.cs" />
     <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="Navigation\ConnectionFinders\DelegateConnectionFinder.cs" />
+    <Compile Include="Navigation\ConnectionFinders\IHasConnections.cs" />
+    <Compile Include="Navigation\ConnectionFinders\IConnectionFinder.cs" />
+    <Compile Include="Navigation\ConnectionFinders\SimpleConnectionFinder.cs" />
     <Compile Include="Navigation\PathWeighters\IPathWeighter.cs" />
     <Compile Include="Util\NodeMath.cs" />
     <Compile Include="Navigation\PathWeighters\CallbackPathWeighter.cs" />

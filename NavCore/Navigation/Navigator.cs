@@ -32,6 +32,8 @@ namespace NavCore.Navigation
             Comparer = comparer;
         }
 
+
+
         /// <summary>
         /// Constructor. Takes a function reference that will be used to determine how paths are weighted
         /// </summary>
@@ -95,9 +97,6 @@ namespace NavCore.Navigation
             
             return new NavigationResult<TNavNode>(route) { Success = success};
         }
-
-
-
 
         /// <summary>
         /// recursive function for path finding
