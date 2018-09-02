@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NavCore.Navigation {
 
-    public interface INavigationNode {
+    public interface INavigationNode<T> {
 
         /// <summary>
         /// The connections between this node and other navigatable nodes
@@ -14,7 +14,7 @@ namespace NavCore.Navigation {
         /// Connections are unidirectional. In order to create a mutal (i.e two way) connection 
         /// the other node needs a connection to this this node as well
         /// </summary>
-        IEnumerable<INavigationNode> Connections { get; }
+        IEnumerable<T> Connections { get; }
 
     }
 }

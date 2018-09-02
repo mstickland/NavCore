@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NavCore.DistanceNavigation {
 
-    public class PositionNode : NavigationNodeBase {
+    public class PositionNode : NavigationNodeBase<PositionNode> {
 
         /// <summary>
         /// This node's position in 2D space. 

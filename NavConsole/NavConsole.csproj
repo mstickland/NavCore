@@ -47,10 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleProgress.cs" />
-    <Compile Include="FavouriteComparer.cs" />
+    <Compile Include="DistanceNavigation\DistanceNavigationSample.cs" />
+    <Compile Include="FluentNavigationSample.cs" />
+    <Compile Include="LetterNavigation\FavouriteLetterComparer.cs" />
+    <Compile Include="LetterNavigation\LetterFinder.cs" />
+    <Compile Include="LetterNavigation\LetterNavigationSample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleNavigation.cs" />
+    <Compile Include="IntNavigation\IntNavigationSample.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

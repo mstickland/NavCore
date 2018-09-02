@@ -21,9 +21,10 @@ namespace NavCore.Fluent
     /// </summary>
     public class FluentNavigation
     {
-        
 
-        public static IToOrFromable<TNode> StartNavigation<TNode>() where TNode : class, INavigationNode {
+
+        public static IToOrFromable<TNode> StartNavigation<TNode>()
+        {
             return new NavigationContext<TNode>();
         }
     }

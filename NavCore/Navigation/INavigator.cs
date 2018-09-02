@@ -10,7 +10,7 @@ namespace NavCore.Navigation {
     /// <summary>
     /// Finds optimal path between two nodes using AStar
     /// </summary>
-    public interface INavigator<TNavNode> where TNavNode : class, INavigationNode {
+    public interface INavigator<TNavNode>  {
 
         /// <summary>
         /// Returns a path between the two nodes

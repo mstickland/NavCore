@@ -1,4 +1,5 @@
-﻿using NavCore.Navigation.PathWeighters;
+﻿using NavCore.Navigation.ConnectionFinders;
+using NavCore.Navigation.PathWeighters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,29 +17,43 @@ namespace NavCore.Navigation
     /// Navigates between two nodes 
     /// </summary>
     /// <typeparam name="TNavNode"></typeparam>
-    public class Navigator<TNavNode> : INavigator<TNavNode> where TNavNode : class, INavigationNode
+    public class Navigator<TNavNode> : INavigator<TNavNode> //where TNavNode
     {
 
         /// <summary>
         /// This is what determines how paths are weighted
         /// </summary>
         public IPathWeighter<TNavNode> Comparer { get; set; }
-
         /// <summary>
-        /// Simple constructor that sets the comparer
+        /// Finds connections from a given node to other nodes
         /// </summary>
-        /// <param name="comparer"></param>
-        public Navigator(IPathWeighter<TNavNode> comparer) {
+        public IConnectionFinder<TNavNode> Finder { get; set; }
+
+
+
+
+        public Navigator(IConnectionFinder<TNavNode> finder, IPathWeighter<TNavNode> comparer)
+        {
+            Finder   = finder;
             Comparer = comparer;
         }
 
-
+        /// <summary>
+        /// Simple constructor that sets the finder and comparer 
+        /// </summary>
+        /// <param name="comparer"></param>
+        public Navigator(Func<TNavNode, IEnumerable<TNavNode>> finder, IPathWeighter<TNavNode> comparer)
+        {
+            Finder   = new CallbackConnectionFinder<TNavNode>(finder);
+            Comparer = comparer;
+        }
 
         /// <summary>
         /// Constructor. Takes a function reference that will be used to determine how paths are weighted
         /// </summary>
         /// <param name="comparison"></param>
-        public Navigator(Func<TNavNode, double> comparison) {
+        public Navigator(IConnectionFinder<TNavNode> finder, Func<TNavNode, double> comparison)   {
+            Finder   = finder;
             Comparer = new CallbackWeighterOneArg<TNavNode>(comparison);
         }
 
@@ -46,7 +61,29 @@ namespace NavCore.Navigation
         /// Constructor. Takes a function reference that will be used to determine how paths are weighted
         /// </summary>
         /// <param name="comparison"></param>
-        public Navigator(Func<TNavNode, TNavNode, TNavNode, double> comparison) {
+        public Navigator(Func<TNavNode, IEnumerable<TNavNode>> finder, Func<TNavNode, double> comparison)
+        {
+            Finder   = new CallbackConnectionFinder<TNavNode>(finder);
+            Comparer = new CallbackWeighterOneArg<TNavNode>(comparison);
+        }
+
+        /// <summary>
+        /// Constructor. Takes a function reference that will be used to determine how paths are weighted
+        /// </summary>
+        /// <param name="comparison"></param>
+        public Navigator(IConnectionFinder<TNavNode> finder, Func<TNavNode, TNavNode, TNavNode, double> comparison) {
+            Finder   = finder;
+            Comparer = new CallbackWeighterThreeArg<TNavNode>(comparison);
+        }
+
+
+        /// <summary>
+        /// Constructor. Takes a function reference that will be used to determine how paths are weighted
+        /// </summary>
+        /// <param name="comparison"></param>
+        public Navigator(Func<TNavNode, IEnumerable<TNavNode>> finder, Func<TNavNode, TNavNode, TNavNode, double> comparison)
+        {
+            Finder   = new CallbackConnectionFinder<TNavNode>(finder);
             Comparer = new CallbackWeighterThreeArg<TNavNode>(comparison);
         }
 
@@ -112,12 +149,13 @@ namespace NavCore.Navigation
             route.Add(location);
             progress?.Report(new NavigationResult<TNavNode>(new List<TNavNode>(route)) { InProgress = true, Success = false });
 
-            if (ReferenceEquals(location, destination))
+            //if (ReferenceEquals(location, destination))
+            if (location.Equals(destination))
                 return weight;
 
             vistedPlaces.Add(location);
 
-            var unvisitedConnections = location.Connections.
+            var unvisitedConnections = Finder.GetConnections(location).
                     Except(vistedPlaces).
                     Select(n => new { Node = n, Weight = Comparer.GetPathWeight(start, location, (TNavNode)n, destination, route) }).
                     Where(x => x.Weight < double.PositiveInfinity).

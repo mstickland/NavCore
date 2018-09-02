@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NavCore.Navigation.PathFinders
+namespace NavCore.Navigation.ConnectionFinders
 {
 
-    public interface IHasConnections<T> where T : IHasConnections<T>
+    public interface IHasConnections<T> 
     {
         IEnumerable<T> Connections { get; }
     }

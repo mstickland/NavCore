@@ -1,4 +1,5 @@
 ﻿using NavCore.Navigation;
+using NavCore.Navigation.ConnectionFinders;
 using NavCore.Navigation.PathWeighters;
 using System;
 using System.Collections.Generic;
@@ -9,23 +10,23 @@ using System.Threading.Tasks;
 namespace NavCore.Fluent
 {
 
-    public interface IToOrFromable<TNode> where TNode : class, INavigationNode
+    public interface IToOrFromable<TNode> 
     {
         IToable<TNode> From(TNode node);
         IFromable<TNode> To(TNode node);
     }
 
-    public interface IFromable<TNode> where TNode : class, INavigationNode
+    public interface IFromable<TNode> 
     {
-        IUsingWithable<TNode> From(TNode node);
+        IFindConnectionsWithable<TNode> From(TNode node);
     }
 
-    public interface IToable<TNode> where TNode : class, INavigationNode
+    public interface IToable<TNode> 
     {
-        IUsingWithable<TNode> To(TNode node);
+        IFindConnectionsWithable<TNode> To(TNode node);
     }
 
-    public interface IUsingWithable<TNode> where TNode : class, INavigationNode
+    public interface IUsingWithable<TNode> 
     {
         /// <summary>
         /// 
@@ -57,16 +58,22 @@ namespace NavCore.Fluent
         IGetPathable<TNode> Using(Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> comparison);
     }
 
-    public interface IGetPathable<TNode> where TNode : class, INavigationNode
+    public interface IGetPathable<TNode> 
     {
         INavigationResult<TNode> GetPath();
     }
 
-    public class NavigationContext<TNode> : IFromable<TNode>, IToable<TNode>, IUsingWithable<TNode>, IGetPathable<TNode>, IToOrFromable<TNode>
-            where TNode : class, INavigationNode
+    public interface IFindConnectionsWithable<TNode>
     {
-        
+        IUsingWithable<TNode> FindConnectionsWith(IConnectionFinder<TNode> finder);
+        IUsingWithable<TNode> FindConnectionsWith(Func<TNode, IEnumerable<TNode>> func);
+    }
+
+    public class NavigationContext<TNode> : IFromable<TNode>, IToable<TNode>, IUsingWithable<TNode>, IGetPathable<TNode>, IToOrFromable<TNode>, IFindConnectionsWithable<TNode>            
+    {
+
         private IPathWeighter<TNode> _heuristic;
+        private IConnectionFinder<TNode> _finder;//TODO:
 
         private TNode _from;
         private TNode _to;
@@ -74,57 +81,83 @@ namespace NavCore.Fluent
         /// <summary>
         /// hide constructor 
         /// </summary>
-        internal NavigationContext() {
+        internal NavigationContext()
+        {
 
         }
 
-        IUsingWithable<TNode> IFromable<TNode>.From(TNode node) {
+        public IUsingWithable<TNode> FindConnectionsWith(IConnectionFinder<TNode> finder)
+        {
+            _finder = finder;
+            return this;
+        }
+
+        public IUsingWithable<TNode> FindConnectionsWith(Func<TNode, IEnumerable<TNode>> func)
+        {
+            _finder = new CallbackConnectionFinder<TNode>(func);
+            return this;
+        }
+
+        IFindConnectionsWithable<TNode> IFromable<TNode>.From(TNode node)
+        {
             _from = node;
             return this;
         }
 
-        IToable<TNode> IToOrFromable<TNode>.From(TNode node) {
+        IFindConnectionsWithable<TNode> IToable<TNode>.To(TNode node)
+        {
+            _to = node;
+            return this;
+        }
+
+        IFromable<TNode> IToOrFromable<TNode>.To(TNode node)
+        {
+            _to = node;
+            return this;
+        }
+
+
+        IToable<TNode> IToOrFromable<TNode>.From(TNode node)
+        {
             _from = node;
             return this;
         }
 
-        INavigationResult<TNode> IGetPathable<TNode>.GetPath() {
-            
-            var navigator = new Navigator<TNode>(_heuristic);
+        INavigationResult<TNode> IGetPathable<TNode>.GetPath()
+        {
+
+            var navigator = new Navigator<TNode>(_finder, _heuristic);
             return navigator.Navigate(_from, _to);
         }
 
-        IUsingWithable<TNode> IToable<TNode>.To(TNode node) {
-            _to = node;
-            return this;
-        }
 
-        IFromable<TNode> IToOrFromable<TNode>.To(TNode node) {
-            _to = node;
-            return this;
-        }
 
-        IGetPathable<TNode> IUsingWithable<TNode>.Using(IPathWeighter<TNode> comparer) {
+        IGetPathable<TNode> IUsingWithable<TNode>.Using(IPathWeighter<TNode> comparer)
+        {
             _heuristic = comparer;
             return this;
         }
 
-        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, double> comparison) {
+        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, double> comparison)
+        {
             _heuristic = new CallbackWeighter<TNode>(comparison);
             return this;
         }
 
-        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, TNode, TNode, double> comparison) {
+        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, TNode, TNode, double> comparison)
+        {
             _heuristic = new CallbackWeighter<TNode>(comparison);
             return this;
         }
 
-        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, TNode, TNode, TNode, double> comparison) {
+        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, TNode, TNode, TNode, double> comparison)
+        {
             _heuristic = new CallbackWeighter<TNode>(comparison);
             return this;
         }
 
-        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> comparison) {
+        IGetPathable<TNode> IUsingWithable<TNode>.Using(Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> comparison)
+        {
             _heuristic = new CallbackWeighter<TNode>(comparison);
             return this;
         }

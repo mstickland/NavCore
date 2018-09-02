@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NavCore.Navigation.PathFinders
+namespace NavCore.Navigation.ConnectionFinders
 {
     
     /// <summary>

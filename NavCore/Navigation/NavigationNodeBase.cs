@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NavCore.Navigation.ConnectionFinders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,27 +11,25 @@ namespace NavCore.Navigation {
     /// <summary>
     /// Represents one node used for navigation
     /// </summary>
-    public class NavigationNodeBase: INavigationNode {
+    public class NavigationNodeBase<T>: INavigationNode<T>, IHasConnections<T> {
         
-        /////////TODO: make this NavigationNodeBase with generic, make a new class just to close the generic
-
-
         /// <summary>
         /// connections/paths to other nodes
         /// </summary>
-        protected List<NavigationNodeBase> _connections = new List<NavigationNodeBase>();
-        public IEnumerable<NavigationNodeBase> Connections { get { return _connections; } } 
+        protected List<T> _connections = new List<T>();
+        public IEnumerable<T> Connections { get { return _connections; } } 
 
         /// <summary>
         /// Identitifer largely for iding it in a navigation route
         /// </summary>
         public string Name { get; set; }
 
-        IEnumerable<INavigationNode> INavigationNode.Connections {
-            get {
-                return Connections;
-            }
-        }
+
+        //IEnumerable<T> INavigationNode.Connections {
+        //    get {
+        //        return Connections;
+        //    }
+        //}
 
         private const int RandIdLength = 5;
         /// <summary>
@@ -67,7 +66,7 @@ namespace NavCore.Navigation {
         /// Adds a one way connection - that is you can travel to the node but not back
         /// </summary>
         /// <param name="nodes"></param>
-        public void AddOneWayConnection(NavigationNodeBase node) {
+        public void AddOneWayConnection(T node) {
             _connections.Add(node);
         }
 
@@ -75,7 +74,7 @@ namespace NavCore.Navigation {
         /// Adds a one way connections - see AddOneWayConnection
         /// </summary>
         /// <param name="nodes"></param>
-        public void AddOneWayConnections(IEnumerable<NavigationNodeBase> nodes) {
+        public void AddOneWayConnections(IEnumerable<T> nodes) {
             foreach (var node in nodes) 
                 AddOneWayConnection(node);            
         }

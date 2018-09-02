@@ -15,7 +15,7 @@ namespace NavCore.Navigation.PathWeighters {
     /// However there should only ever be one set
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
-    public sealed class CallbackWeighter<TNode> : IPathWeighter<TNode> where TNode : INavigationNode {
+    public sealed class CallbackWeighter<TNode> : IPathWeighter<TNode> {
 
 
         private readonly Func<TNode, double> _oneArg;
@@ -82,7 +82,7 @@ namespace NavCore.Navigation.PathWeighters {
     /// TODO
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
-    public sealed class CallbackWeighterOneArg<TNode> : IPathWeighter<TNode> where TNode : INavigationNode {
+    public sealed class CallbackWeighterOneArg<TNode> : IPathWeighter<TNode> {
 
 
         private readonly Func<TNode, double> _callback;
@@ -109,7 +109,7 @@ namespace NavCore.Navigation.PathWeighters {
         }
     }
 
-    public sealed class CallbackWeighterThreeArg<TNode> : IPathWeighter<TNode> where TNode : INavigationNode {
+    public sealed class CallbackWeighterThreeArg<TNode> : IPathWeighter<TNode> {
 
         
         private readonly Func<TNode, TNode, TNode, double> _callback;
@@ -136,7 +136,7 @@ namespace NavCore.Navigation.PathWeighters {
         }
     }
 
-    public sealed class CallbackWeighterFourArg<TNode> : IPathWeighter<TNode> where TNode : INavigationNode {
+    public sealed class CallbackWeighterFourArg<TNode> : IPathWeighter<TNode> {
 
 
         private readonly Func<TNode, TNode, TNode, TNode, double> _callback;
@@ -163,7 +163,7 @@ namespace NavCore.Navigation.PathWeighters {
         }
     }
 
-    public sealed class CallbackWeighterFiveArg<TNode> : IPathWeighter<TNode> where TNode : INavigationNode {
+    public sealed class CallbackWeighterFiveArg<TNode> : IPathWeighter<TNode> {
 
 
         private readonly Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> _callback;
