@@ -91,7 +91,8 @@ namespace NavCore.Navigation
         /// Constructor. Takes a function reference that will be used to determine how paths are weighted
         /// </summary>
         /// <param name="comparison"></param>
-        public Navigator(Func<TNavNode, TNavNode, TNavNode, TNavNode, double> comparison) {
+        public Navigator(IConnectionFinder<TNavNode> finder, Func<TNavNode, TNavNode, TNavNode, TNavNode, double> comparison) {
+            Finder   = finder;
             Comparer = new CallbackWeighterFourArg<TNavNode>(comparison);
         }
 
@@ -99,7 +100,32 @@ namespace NavCore.Navigation
         /// Constructor. Takes a function reference that will be used to determine how paths are weighted
         /// </summary>
         /// <param name="comparison"></param>
-        public Navigator(Func<TNavNode, TNavNode, TNavNode, TNavNode, IEnumerable<TNavNode>, double> comparison) {
+        public Navigator(Func<TNavNode, IEnumerable<TNavNode>> finder, Func<TNavNode, TNavNode, TNavNode, TNavNode, double> comparison)
+        {            
+            Finder   = new CallbackConnectionFinder<TNavNode>(finder);
+            Comparer = new CallbackWeighterFourArg<TNavNode>(comparison);
+        }
+
+        /// <summary>
+        /// Constructor. Takes a function reference that will be used to determine how paths are weighted
+        /// order:
+        /// start, current, potential, destination, pathSoFar
+        /// </summary>
+        /// <param name="comparison"></param>
+        public Navigator(IConnectionFinder<TNavNode> finder, Func<TNavNode, TNavNode, TNavNode, TNavNode, IEnumerable<TNavNode>, double> comparison) {    
+            Finder   = finder;
+            Comparer = new CallbackWeighterFiveArg<TNavNode>(comparison);
+        }
+
+        /// <summary>
+        /// Constructor. Takes a function reference that will be used to determine how paths are weighted
+        /// order:
+        /// start, current, potential, destination, pathSoFar
+        /// </summary>
+        /// <param name="comparison"></param>
+        public Navigator(Func<TNavNode, IEnumerable<TNavNode>> finder, Func<TNavNode, TNavNode, TNavNode, TNavNode, IEnumerable<TNavNode>, double> comparison)
+        {
+            Finder   = new CallbackConnectionFinder<TNavNode>(finder);
             Comparer = new CallbackWeighterFiveArg<TNavNode>(comparison);
         }
 

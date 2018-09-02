@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NavCore.DistanceNavigation;
+using NavCore.Fluent;
 using NavCore.Navigation;
 using NavCore.Navigation.ConnectionFinders;
 using NavCore.Navigation.PathWeighters;
@@ -27,11 +28,14 @@ namespace NavTests
         public void ComplexIntNav()
         {
             var finder    = new CallbackConnectionFinder<int>(i => new[]{ i + 1, i * 2, i -1 });
-            var weighter  = new CallbackWeighter<int>( (c, p, d) => Math.Abs(d - p));
+            var weighter  = new CallbackWeighter<int>( (current, potential, destination) => Math.Abs(destination - potential));
             var navigator = new Navigator<int>(finder, weighter);
 
             var path = navigator.Navigate(1, 100);
-            string expectedPath = "1-->2-->4-->8-->16-->32-->64-->128-->127-->126-->125-->124-->123-->122-->121-->120-->119-->118-->117-->116-->115-->114-->113-->112-->111-->110-->109-->108-->107-->106-->105-->104-->103-->102-->101-->100";
+            string expectedPath = "1-->2-->4-->8-->16-->32-->64-->128" +
+                                  "-->127-->126-->125-->124-->123-->122-->121-->120-->119-->118" +
+                                  "-->117-->116-->115-->114-->113-->112-->111-->110-->109-->108" +
+                                  "-->107-->106-->105-->104-->103-->102-->101-->100";
             Assert.AreEqual(expectedPath, path.ToString());
         }
 
@@ -52,6 +56,18 @@ namespace NavTests
             var path = navigator.Navigate(nodes.First(), nodes.Last());
             Assert.AreEqual("A-->B2-->C", path.ToString());
 
+        }
+
+        [TestMethod]
+        public void FluentNavigationTest()
+        {
+            var path = FluentNavigation.StartNavigation<int>()
+                                       .To(10)
+                                       .From(1)
+                                       .FindConnectionsWith(i => new[] { i + 1 })
+                                       .Using(i => 1)
+                                       .GetPath();
+            Assert.AreEqual("1-->2-->3-->4-->5-->6-->7-->8-->9-->10", path.ToString());
         }
     }
 }

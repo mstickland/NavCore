@@ -170,6 +170,9 @@ namespace NavCore.Navigation.PathWeighters {
 
         /// <summary>
         /// Constructor that sets callback
+        /// 
+        /// order:
+        /// start, current, potential, destination, pathSoFar
         /// </summary>
         /// <param name="callback"></param>
         public CallbackWeighterFiveArg(Func<TNode, TNode, TNode, TNode, IEnumerable<TNode>, double> callback) {
